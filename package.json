@@ -7,7 +7,9 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "tsup && cp package.json ./dist && cp README.md ./dist",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint .",
+    "test:dev": "vitest --watch"
   },
   "repository": {
     "type": "git",
@@ -27,11 +29,15 @@
   },
   "homepage": "https://github.com/adrianhideki/theme-token-manager#readme",
   "devDependencies": {
+    "@eslint/js": "^9.29.0",
     "@types/node": "^24.0.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
     "@vitest/browser": "^3.2.3",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
     "jsdom": "^26.1.0",
     "playwright": "^1.53.0",
     "react-dom": "^19.1.0",

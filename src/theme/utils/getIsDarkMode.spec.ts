@@ -6,9 +6,9 @@ const localstorageMock = (mockedValue?: string): Storage => {
     getItem: () => (mockedValue ? mockedValue : null),
     length: 1,
     clear: () => {},
-    key: (_: number) => "",
+    key: () => "",
     removeItem: () => {},
-    setItem: (_: string, __: string) => {},
+    setItem: () => {},
   };
 };
 
