@@ -22,7 +22,7 @@ import type {
   themePaletteTextTokens,
 } from "./tokens";
 
-type NestedOptional<T> = {
+export type NestedOptional<T> = {
   [P in keyof T]?: NestedOptional<T[P]>;
 };
 
@@ -42,7 +42,7 @@ export type BaseThemeConfig = {
     family?: Record<FontFamily, string>;
     spacing?: Record<FontSpacing, number>;
     paragraphSpacing?: Record<FontParagraphSpacing, number>;
-    size?: Record<FontParagraphSpacing, number>;
+    size?: Record<FontSize, number>;
     weight?: Record<FontWeight, number>;
     height?: Record<FontHeight, number>;
   };
