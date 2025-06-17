@@ -1,16 +1,23 @@
 {
   "name": "theme-token-manager",
-  "version": "0.0.0",
+  "version": "0.0.6",
   "description": "A theme token manager for react",
   "main": "index.js",
+  "module": "index.mjs",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "tsup src/index.ts --dts --format esm,cjs"
+    "build": "tsup && cp package.json ./dist && cp README.md ./dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adrianhideki/theme-token-manager.git"
   },
-  "keywords": [],
+  "keywords": [
+    "theme",
+    "token",
+    "manager",
+    "react"
+  ],
   "author": "adrianhideki",
   "license": "ISC",
   "type": "commonjs",

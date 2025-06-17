@@ -46,6 +46,7 @@ import {
   themePaletteTextTokens,
 } from "./tokens";
 import { defaultTheme, emptyTheme } from "./default";
+import { ColorScaleStringValues } from "./colors/types";
 
 export type {
   Theme,
@@ -62,6 +63,7 @@ export type {
   BorderWidthValues,
   BorderRadiusValues,
   SpacingValues,
+  ColorScaleStringValues,
 };
 
 export {
