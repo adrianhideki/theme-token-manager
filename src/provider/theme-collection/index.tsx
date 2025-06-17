@@ -6,15 +6,14 @@ import {
 } from "react";
 import { ThemeCollectionContext } from "../../context/theme-collection";
 import { useTheme } from "../../hook/use-theme";
-import { defaultTheme } from "../../theme/default";
 import type { Theme } from "../../theme/types";
 
 const ThemeCollectionProvider = ({ children }: PropsWithChildren) => {
-  const { updateTheme } = useTheme();
+  const { updateTheme, referenceTheme } = useTheme();
   const [themes, setThemes] = useState(
     localStorage.getItem("themes")
       ? (JSON.parse(localStorage.getItem("themes")!) as Theme[])
-      : [{ ...defaultTheme, id: "default", name: "default" }]
+      : [{ ...(referenceTheme as Theme), id: "default", name: "default" }]
   );
   const [currentTheme, setCurrentTheme] = useState(
     String(localStorage.getItem("currentTheme") ?? themes[0].id)
