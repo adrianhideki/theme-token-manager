@@ -8,16 +8,42 @@ import { ThemeCollectionContext } from "../../context/theme-collection";
 import { useTheme } from "../../hook/use-theme";
 import type { Theme } from "../../theme/types";
 
+const getThemes = (defaultTheme: Theme) => {
+  const themes = localStorage.getItem("themes");
+
+  return themes ? (JSON.parse(themes) as Theme[]) : [defaultTheme];
+};
+
+const getCurrentTheme = (value: string) => {
+  const id = localStorage.getItem("currentTheme");
+
+  return id ? id : value;
+};
+
 const ThemeCollectionProvider = ({ children }: PropsWithChildren) => {
-  const { updateTheme, referenceTheme } = useTheme();
-  const [themes, setThemes] = useState(
-    localStorage.getItem("themes")
-      ? (JSON.parse(localStorage.getItem("themes")!) as Theme[])
-      : [{ ...(referenceTheme as Theme), id: "default", name: "default" }]
-  );
+  const { theme, updateTheme, referenceTheme } = useTheme();
+
+  const [themes, setThemes] = useState(() => {
+    return getThemes(referenceTheme as Theme);
+  });
+
   const [currentTheme, setCurrentTheme] = useState(
-    String(localStorage.getItem("currentTheme") ?? themes[0].id)
+    getCurrentTheme(String(themes[0].id))
   );
+
+  useEffect(() => {
+    if (theme?.id === currentTheme) {
+      return;
+    }
+
+    const result = themes.find((theme) => theme.id === currentTheme);
+
+    if (!result) {
+      return;
+    }
+
+    updateTheme(result);
+  }, [theme, themes, currentTheme, updateTheme]);
 
   useEffect(() => {
     const theme = themes.find((theme) => theme.id === currentTheme);

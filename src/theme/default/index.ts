@@ -84,6 +84,8 @@ export const dimensions: Record<DimensionValues, number> = {
 };
 
 export const defaultTheme: Theme = {
+  id: "default",
+  name: "default",
   base: {
     color: {
       collection: {

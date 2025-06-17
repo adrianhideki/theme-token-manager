@@ -160,6 +160,8 @@ export type Theme = {
  * ```
  */
 export type ResultTheme = {
+  id?: string;
+  name?: string;
   base: BaseThemeConfig;
   color: ThemeColor<Record<ColorScaleValues, string>>;
   font: ThemeFont<string, number, number, number, number, number>;
