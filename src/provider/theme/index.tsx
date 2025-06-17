@@ -7,19 +7,29 @@ import {
 } from "react";
 import { ThemeContext } from "../../context/theme-context";
 import { defaultTheme, type PartialTheme, type Theme } from "../../theme";
-import { deepMerge, transformTheme } from "../../theme/utils";
+import { deepMerge, transformTheme, validateTheme } from "../../theme/utils";
 
 type ThemeProviderProps = {
   theme?: PartialTheme;
+};
+
+const getTheme = (
+  inputTheme: PartialTheme | undefined,
+  defaultTheme: Theme
+) => {
+  const isInputValid = validateTheme(inputTheme as Theme).isValid;
+
+  return isInputValid
+    ? (inputTheme as Theme)
+    : deepMerge<Theme>(defaultTheme, inputTheme as PartialTheme) ??
+        defaultTheme;
 };
 
 const ThemeProvider = ({
   children,
   theme: inputTheme,
 }: PropsWithChildren<ThemeProviderProps>) => {
-  const [theme, setTheme] = useState<Theme>(
-    deepMerge<Theme>(defaultTheme, inputTheme ?? defaultTheme)
-  );
+  const [theme, setTheme] = useState<Theme>(getTheme(inputTheme, defaultTheme));
 
   const handleUpdateTheme = useCallback((value: PartialTheme) => {
     setTheme(value as Theme);
@@ -27,7 +37,7 @@ const ThemeProvider = ({
 
   useEffect(() => {
     if (inputTheme) {
-      setTheme(deepMerge<Theme>(defaultTheme, inputTheme));
+      setTheme(getTheme(inputTheme, defaultTheme));
     }
   }, [inputTheme]);
 
