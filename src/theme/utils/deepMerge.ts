@@ -10,7 +10,10 @@ export default function deepMerge<T>(
 
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
-      if (isObject(source[key])) {
+      if (
+        isObject(source[key]) &&
+        (isObject(target[key]) || target[key] === undefined)
+      ) {
         if (!(key in target)) Object.assign(output, { [key]: source[key] });
         else
           output[key] = deepMerge(
