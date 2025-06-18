@@ -98,11 +98,11 @@ type ThemeFont<Family, Spacing, Size, Height, Weight, Paragraph> = {
 };
 
 type ThemeSize<Value> = {
-  border?: {
-    width?: Record<BorderWidthValues, Value>;
-    radius?: Record<BorderRadiusValues, Value>;
+  border: {
+    width: Record<BorderWidthValues, Value>;
+    radius: Record<BorderRadiusValues, Value>;
   };
-  spacing?: Record<SpacingValues, Value>;
+  spacing: Record<SpacingValues, Value>;
 };
 
 type ThemeColor<T> = {
