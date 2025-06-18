@@ -9,6 +9,10 @@ export default function validateTheme(theme: Theme) {
   const errors: string[] = [];
 
   try {
+    if (!theme) {
+      return { isValid: false, errors: ["Empty object"] };
+    }
+
     const colorCollection = Object.keys(theme?.base?.color?.collection || {});
     const colorFoundations = Object.keys(
       theme?.base?.color?.foundations || {}

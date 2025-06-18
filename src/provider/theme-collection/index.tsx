@@ -6,12 +6,17 @@ import {
 } from "react";
 import { ThemeCollectionContext } from "../../context/theme-collection";
 import { useTheme } from "../../hook/use-theme";
-import type { Theme } from "../../theme/types";
+import type { PartialTheme, Theme } from "../../theme/types";
+import { defaultTheme as baseTheme, validateTheme } from "../../theme";
+import { deepMerge } from "src/theme/utils";
 
 const getThemes = (defaultTheme: Theme) => {
   const themes = localStorage.getItem("themes");
+  const isValid = validateTheme(defaultTheme).isValid;
 
-  return themes ? (JSON.parse(themes) as Theme[]) : [defaultTheme];
+  return themes
+    ? (JSON.parse(themes) as Theme[])
+    : [isValid ? defaultTheme : (deepMerge(baseTheme, defaultTheme) as Theme)];
 };
 
 const getCurrentTheme = (value: string) => {
@@ -20,30 +25,23 @@ const getCurrentTheme = (value: string) => {
   return id ? id : value;
 };
 
-const ThemeCollectionProvider = ({ children }: PropsWithChildren) => {
-  const { theme, updateTheme, referenceTheme } = useTheme();
+type ThemeCollectionProviderProps = {
+  defaultTheme?: PartialTheme;
+};
+
+const ThemeCollectionProvider = ({
+  children,
+  defaultTheme: inputTheme,
+}: PropsWithChildren<ThemeCollectionProviderProps>) => {
+  const { updateTheme } = useTheme();
 
   const [themes, setThemes] = useState(() => {
-    return getThemes(referenceTheme as Theme);
+    return getThemes(inputTheme as Theme);
   });
 
   const [currentTheme, setCurrentTheme] = useState(
     getCurrentTheme(String(themes[0].id))
   );
-
-  useEffect(() => {
-    if (theme?.id === currentTheme) {
-      return;
-    }
-
-    const result = themes.find((theme) => theme.id === currentTheme);
-
-    if (!result) {
-      return;
-    }
-
-    updateTheme(result);
-  }, [theme, themes, currentTheme, updateTheme]);
 
   useEffect(() => {
     const theme = themes.find((theme) => theme.id === currentTheme);
