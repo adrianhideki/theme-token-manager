@@ -8,7 +8,7 @@ import { ThemeCollectionContext } from "../../context/theme-collection";
 import { useTheme } from "../../hook/use-theme";
 import type { PartialTheme, Theme } from "../../theme/types";
 import { defaultTheme as baseTheme, validateTheme } from "../../theme";
-import { deepMerge } from "src/theme/utils";
+import { deepMerge } from "../../theme/utils";
 
 const getThemes = (defaultTheme: Theme) => {
   const themes = localStorage.getItem("themes");
