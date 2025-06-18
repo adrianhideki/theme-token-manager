@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import transformTheme from "./transformTheme";
 import type { PartialTheme, Theme } from "../types";
+import deepMerge from "./deepMerge";
 
 describe("transformTheme", () => {
   const theme: Theme = {
@@ -171,6 +172,7 @@ describe("transformTheme", () => {
       dark: {
         surface: {
           "primary-default": { color: "primary", scale: 1000 },
+          page: { color: "foundation.black" },
         },
         text: {
           "primary-onColor": { color: "secondary", scale: 100 },
@@ -241,5 +243,27 @@ describe("transformTheme", () => {
     const result = transformTheme(theme);
     expect(result.id).toBe("test-theme");
     expect(result.name).toBe("Test Theme");
+  });
+
+  it("should throw when pass an invalid color", () => {
+    const mockedTheme = deepMerge(theme, {
+      palette: { dark: { surface: { pageAlternative: { color: "x" } } } },
+    }) as Theme;
+
+    expect(() => {
+      transformTheme(mockedTheme);
+    }).toThrow("Invalid color value x.");
+  });
+
+  it("should return a color from collection", () => {
+    const mockedTheme = deepMerge(theme, {
+      palette: {
+        dark: { surface: { pageAlternative: { color: "black", scale: 100 } } },
+      },
+    }) as Theme;
+
+    const result = transformTheme(mockedTheme);
+
+    expect(result.palette.dark.surface.pageAlternative).toBe("#111111");
   });
 });

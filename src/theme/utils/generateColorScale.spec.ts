@@ -9,10 +9,25 @@ describe("generateColorScale", () => {
   });
 
   it("returns valid hex colors for each scale key", () => {
-    const scale = generateColorScale("#3498db");
-    for (const key of colorScaleValuesTokens) {
-      expect(scale[key]).toMatch(/^#[0-9a-f]{6}$/i);
-    }
+    const colors = [
+      "#080000",
+      "#3498db",
+      "#ffffff",
+      "#4dff00",
+      "#0004ff",
+      "#ff0000",
+      "#915fad",
+      "#5f9dad",
+      "#ff0066"
+    ];
+
+    colors.forEach((color) => {
+      const scale = generateColorScale(color);
+
+      for (const key of colorScaleValuesTokens) {
+        expect(scale[key]).toMatch(/^#[0-9a-f]{6}$/i);
+      }
+    });
   });
 
   it("generates different scales for different base colors", () => {

@@ -3,27 +3,32 @@ function isObject(item: unknown) {
 }
 
 export default function deepMerge<T>(
-  target: Record<string, unknown>,
-  source: Record<string, unknown>
+  base: Record<string, unknown>,
+  target: Record<string, unknown>
 ) {
-  const output = Object.assign({}, target);
+  const output = Object.assign({}, base);
 
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
-      if (
-        isObject(source[key]) &&
-        (isObject(target[key]) || target[key] === undefined)
-      ) {
-        if (!(key in target)) Object.assign(output, { [key]: source[key] });
-        else
-          output[key] = deepMerge(
-            target[key] as Record<string, unknown>,
-            source[key] as Record<string, unknown>
-          );
-      } else {
-        Object.assign(output, { [key]: source[key] });
-      }
-    });
+  if (!(isObject(base) && isObject(target))) {
+    return base as T;
   }
+
+  Object.keys(target).forEach((field) => {
+    const isObjectInTarget = isObject(target[field]);
+    const isObjectInBaseOrUndefined =
+      isObject(base[field]) || base?.[field] === undefined;
+
+    if (isObjectInTarget && isObjectInBaseOrUndefined) {
+      if (!(field in base)) {
+        Object.assign(output, { [field]: target[field] });
+      } else
+        output[field] = deepMerge(
+          base[field] as Record<string, unknown>,
+          target[field] as Record<string, unknown>
+        );
+    } else {
+      Object.assign(output, { [field]: target[field] });
+    }
+  });
+
   return output as T;
 }

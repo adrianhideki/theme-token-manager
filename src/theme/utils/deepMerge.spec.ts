@@ -12,11 +12,12 @@ describe("deepMerge", () => {
 
   it("merges nested objects recursively", () => {
     const a = { foo: { x: 1, y: 2 }, bar: 5 };
-    const b = { foo: { y: 3, z: 4 }, baz: 6 };
+    const b = { foo: { y: 3, z: 4 }, baz: 6, y: { b: "a" } };
     expect(deepMerge(a, b)).toEqual({
       foo: { x: 1, y: 3, z: 4 },
       bar: 5,
       baz: 6,
+      y: { b: "a" },
     });
   });
 
@@ -70,6 +71,18 @@ describe("deepMerge", () => {
     const a = { a: { b: { c: 1 } } };
     const b = { a: { b: { d: 2 } } };
     expect(deepMerge(a, b)).toEqual({ a: { b: { c: 1, d: 2 } } });
+  });
+
+  it("not merge values", () => {
+    const a = "a";
+    const b = "b";
+
+    expect(
+      deepMerge(
+        a as unknown as Record<string, unknown>,
+        b as unknown as Record<string, unknown>
+      )
+    ).toEqual("a");
   });
 
   it("merge default theme", () => {

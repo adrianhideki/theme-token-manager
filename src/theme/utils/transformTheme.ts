@@ -60,7 +60,11 @@ const getSpacingSizeValue = <TProperty extends string>(theme: Theme) => {
 };
 
 const findColorValue = (theme: Theme, selector: ColorValues) => {
-  return theme.base!.color!.collection![theme.color[selector]];
+  const result = theme.base?.color?.collection?.[theme.color[selector]];
+
+  if (!result) throw `Invalid color for ${selector}`;
+
+  return result;
 };
 
 const findFontValue = <T>(
