@@ -1,6 +1,6 @@
 {
   "name": "theme-token-manager",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A theme token manager for react",
   "main": "index.js",
   "module": "index.mjs",
@@ -10,7 +10,8 @@
     "test": "vitest",
     "lint": "eslint .",
     "test:dev": "vitest --ui --watch --coverage.enabled=true",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "playwright": "^1.53.0",
     "react-dom": "^19.1.0",
