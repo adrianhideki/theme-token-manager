@@ -161,6 +161,8 @@ export default function transformTheme(theme: Theme): ResultTheme {
   };
 
   return {
+    id: theme?.id,
+    name: theme?.name,
     base: theme.base,
     font: font,
     color,
