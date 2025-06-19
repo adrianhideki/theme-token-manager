@@ -255,6 +255,18 @@ describe("transformTheme", () => {
     }).toThrow("Invalid color value x.");
   });
 
+  it("should throw when pass an invalid color into theme selectors", () => {
+    const mockedTheme = deepMerge(theme, {
+      color: {
+        primary: "x",
+      },
+    }) as Theme;
+
+    expect(() => {
+      transformTheme(mockedTheme);
+    }).toThrow("Invalid color for primary");
+  });
+
   it("should return a color from collection", () => {
     const mockedTheme = deepMerge(theme, {
       palette: {

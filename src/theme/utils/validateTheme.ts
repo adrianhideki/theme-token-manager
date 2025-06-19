@@ -5,12 +5,60 @@ import type { Theme } from "../types";
  * reference valid keys and structures defined in the base property.
  * Returns an array of error messages, or an empty array if valid.
  */
+
+const hasKey = (obj: object, key: string) =>
+  Object.prototype.hasOwnProperty.call(obj, key);
+
+const validatePropertyValue = (
+  object: object,
+  possibleValues: Array<string>,
+  errorCallback: (key: string, value: string) => string
+) => {
+  const errors: string[] = [];
+
+  Object.entries(object || {}).forEach(([key, value]) => {
+    if (typeof value === "string" && !possibleValues.some((v) => v === value)) {
+      errors.push(errorCallback(key, value));
+    }
+  });
+
+  return errors;
+};
+
+function validatePalette(
+  colors: string[],
+  palette: object,
+  path: string[] = []
+) {
+  const errors: string[] = [];
+
+  Object.entries(palette).forEach(([key, value]) => {
+    if (typeof value === "object" && value !== null && "color" in value) {
+      const colorRef = value.color as string;
+
+      if (!colors.some((v) => v === colorRef)) {
+        errors.push(
+          `palette.${[...path, key].join(
+            "."
+          )}.color references unknown color "${colorRef}"`
+        );
+      }
+    } else if (typeof value === "object" && value !== null) {
+      validatePalette(colors, value, [...path, key]).forEach((e) =>
+        errors.push(e)
+      );
+    }
+  });
+
+  return errors;
+}
+
 export default function validateTheme(theme: Theme) {
   const errors: string[] = [];
 
   try {
     if (!theme) {
-      return { isValid: false, errors: ["Empty object"] };
+      throw "Empty object.";
     }
 
     const colorCollection = Object.keys(theme?.base?.color?.collection || {});
@@ -21,32 +69,13 @@ export default function validateTheme(theme: Theme) {
 
     const allColors = [...colorCollection, ...colorFoundations, ...colorTheme];
 
-    // Helper to check if a value exists in an object
-    const hasKey = (obj: object, key: string) =>
-      Object.prototype.hasOwnProperty.call(obj, key);
-
-    const validatePropertyValue = (
-      object: object,
-      possibleValues: Array<string>,
-      errorCallback: (key: string, value: string) => string
-    ) => {
-      Object.entries(object || {}).forEach(([key, value]) => {
-        if (
-          typeof value === "string" &&
-          !possibleValues.some((v) => v === value)
-        ) {
-          errors.push(errorCallback(key, value));
-        }
-      });
-    };
-
     // Validate color keys
-    if (theme.color && theme.base?.color) {
+    if (theme?.color && theme.base?.color) {
       validatePropertyValue(
         theme.color,
         [...colorCollection, ...colorFoundations],
         (key, value) => `color.${key} references unknown color "${value}"`
-      );
+      ).forEach((e) => errors.push(e));
     }
 
     if (theme.font && theme.base?.font) {
@@ -55,37 +84,38 @@ export default function validateTheme(theme: Theme) {
         Object.keys(theme.base.font.family || {}),
         (key, value) =>
           `font.family.${key} references unknown family "${value}"`
-      );
+      ).forEach((e) => errors.push(e));
     }
 
-    if (theme.font && theme.base?.font) {
+    if (theme?.font && theme.base?.font) {
       validatePropertyValue(
         theme.font.size,
         Object.keys(theme.base.font.size || {}),
         (key, value) => `font.size.${key} references unknown size "${value}"`
-      );
+      ).forEach((e) => errors.push(e));
     }
 
-    if (theme.font && theme.base?.font) {
+    if (theme?.font && theme.base?.font) {
       validatePropertyValue(
         theme.font.height,
         Object.keys(theme.base.font.height || {}),
         (key, value) =>
           `font.height.${key} references unknown height "${value}"`
-      );
+      ).forEach((e) => errors.push(e));
     }
 
-    if (theme.font && theme.base?.font) {
+    if (theme?.font && theme.base?.font) {
       validatePropertyValue(
         theme.font.spacing,
         Object.keys(theme.base.font.spacing || {}),
         (key, value) =>
           `font.spacing.${key} references unknown spacing "${value}"`
-      );
+      ).forEach((e) => errors.push(e));
     }
 
-    if (theme.size && theme.base?.size) {
+    if (theme?.size && theme.base?.size) {
       const dimensions = theme.base.size.dimension || {};
+
       Object.entries(theme.size.spacing || {}).forEach(([key, value]) => {
         if (typeof value === "string" && !hasKey(dimensions, value)) {
           errors.push(
@@ -95,34 +125,18 @@ export default function validateTheme(theme: Theme) {
       });
     }
 
-    function validatePalette(palette: object, path: string[] = []) {
-      if (typeof palette !== "object" || palette === null) return;
-
-      Object.entries(palette).forEach(([key, value]) => {
-        if (typeof value === "object" && value !== null && "color" in value) {
-          const colorRef = value.color as string;
-
-          if (!allColors.some((v) => v === colorRef)) {
-            errors.push(
-              `palette.${[...path, key].join(
-                "."
-              )}.color references unknown color "${colorRef}"`
-            );
-          }
-        } else if (typeof value === "object" && value !== null) {
-          validatePalette(value, [...path, key]);
-        }
-      });
-    }
-
     if (theme.palette) {
-      validatePalette(theme.palette);
+      validatePalette(allColors, theme.palette).forEach((e) => errors.push(e));
     }
 
     return { isValid: errors.length === 0, errors };
   } catch (error) {
     if (error instanceof Error) {
       errors.push(error.message);
+    }
+
+    if (typeof error === "string") {
+      errors.push(error);
     }
 
     return { isValid: false, errors: errors };
