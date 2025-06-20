@@ -33,3 +33,11 @@ jobs:
 
       - name: Run build
         run: npm run build
+
+      - name: Generate coverage
+        run: npx vitest run --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
