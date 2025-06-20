@@ -1,3 +1,4 @@
+import { defaultTheme } from "../default";
 import type { Theme } from "../types";
 
 /**
@@ -53,6 +54,31 @@ function validatePalette(
   return errors;
 }
 
+function findUndefinedProperties(
+  refObj: Record<string, unknown>,
+  obj: Record<string, unknown>,
+  path: string[] = []
+): string[] {
+  const errors: string[] = [];
+  if (refObj && typeof refObj === "object") {
+    Object.keys(refObj).forEach((key) => {
+      const currentPath = [...path, key];
+      if (obj?.[key] === undefined) {
+        errors.push(currentPath.join("."));
+      } else if (typeof refObj?.[key] === "object" && refObj?.[key]) {
+        errors.push(
+          ...findUndefinedProperties(
+            refObj?.[key] as Record<string, unknown>,
+            obj?.[key] as Record<string, unknown>,
+            currentPath
+          )
+        );
+      }
+    });
+  }
+  return errors;
+}
+
 export default function validateTheme(theme: Theme) {
   const errors: string[] = [];
 
@@ -60,6 +86,10 @@ export default function validateTheme(theme: Theme) {
     if (!theme) {
       throw "Empty object.";
     }
+
+    findUndefinedProperties(defaultTheme, theme).forEach((field) =>
+      errors.push(`${field} property is undefined`)
+    );
 
     const colorCollection = Object.keys(theme?.base?.color?.collection || {});
     const colorFoundations = Object.keys(
