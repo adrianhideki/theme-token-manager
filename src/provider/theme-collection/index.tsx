@@ -40,11 +40,11 @@ const ThemeCollectionProvider = ({
   });
 
   const [currentTheme, setCurrentTheme] = useState(
-    getCurrentTheme(String(themes[0].id))
+    getCurrentTheme(String(themes[0]?.id))
   );
 
   useEffect(() => {
-    const theme = themes.find((theme) => theme.id === currentTheme);
+    const theme = themes.find((theme) => theme?.id === currentTheme);
 
     if (theme) {
       updateTheme(theme);
@@ -66,13 +66,16 @@ const ThemeCollectionProvider = ({
 
   const handleDelete = useCallback(
     (id: string) => {
-      setThemes((prev) => [...prev.filter((t) => t.id !== id)]);
+      const restThemes = themes.filter((t) => t?.id !== id);
 
-      const theme = themes.find((t) => t.id !== id);
+      setThemes(restThemes);
+      const theme = restThemes.find((t) => t?.id !== id);
 
-      if (theme) {
-        setCurrentTheme(theme.id!);
+      if (!theme) {
+        return;
       }
+
+      setCurrentTheme(theme?.id ?? "");
     },
     [themes]
   );
@@ -81,7 +84,7 @@ const ThemeCollectionProvider = ({
     (theme: Theme) => {
       setThemes((prev) =>
         prev.map((item) => {
-          if (item.id === theme.id) {
+          if (item?.id === theme?.id) {
             return theme;
           }
 
