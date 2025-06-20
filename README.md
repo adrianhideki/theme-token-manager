@@ -1,5 +1,12 @@
 # 🎨 theme-token-manager
 
+<div align="center">
+
+[![npm latest package](https://img.shields.io/npm/v/theme-token-manager/latest.svg)](https://www.npmjs.com/package/theme-token-manager)
+[![codecov](https://codecov.io/gh/adrianhideki/theme-token-manager/graph/badge.svg?token=GUAA0DEOWA)](https://codecov.io/gh/adrianhideki/theme-token-manager)
+
+</div>
+
 A theme token manager for React that uses tokens to style and theme applications.  
 Try the [demo](https://react-theme.hydk.com.br/).
 

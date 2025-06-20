@@ -28,16 +28,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Run tests
-        run: npm test
+      - name: Generate coverage
+        run: npx vitest run --coverage
 
       - name: Run build
         run: npm run build
-
-      - name: Generate coverage
-        run: npx vitest run --coverage
 
       - name: Upload coverage
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: adrianhideki/theme-token-manager
