@@ -1,6 +1,6 @@
 {
   "name": "theme-token-manager",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "A theme token manager for react",
   "main": "index.js",
   "module": "index.mjs",
@@ -45,7 +45,6 @@
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "playwright": "^1.53.0",
-    "react-dom": "^19.1.0",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1",
@@ -53,9 +52,11 @@
     "vitest-browser-react": "^0.3.0"
   },
   "peerDependencies": {
-    "react": "^19.1.0"
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "react": "^19.1.0"
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   }
 }
