@@ -1,3 +1,4 @@
+import "./styles.css";
 import { describe, it, expect } from "vitest";
 import { render } from "vitest-browser-react";
 import ThemeProvider from "../provider/theme";
