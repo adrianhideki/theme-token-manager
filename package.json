@@ -1,6 +1,6 @@
 {
   "name": "theme-token-manager",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "A theme token manager for react",
   "main": "index.js",
   "module": "index.mjs",

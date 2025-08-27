@@ -1,6 +1,5 @@
 import { useMemo, type HTMLAttributes, type PropsWithChildren } from "react";
 import { useTheme } from "../hook/use-theme";
-import "./styles.css";
 import {
   injectColorCss,
   injectFontCss,
@@ -9,19 +8,27 @@ import {
 
 type CssBaselineProps = {
   mode: "light" | "dark";
+  prefix?: string;
 } & HTMLAttributes<HTMLDivElement>;
 
 const CssBaseline = ({
   children,
   mode,
   style,
+  prefix,
   ...props
 }: PropsWithChildren<CssBaselineProps>) => {
   const { theme } = useTheme();
 
-  const colorCss = useMemo(() => injectColorCss(theme, mode), [theme, mode]);
-  const fontCss = useMemo(() => injectFontCss(theme), [theme]);
-  const spacingCss = useMemo(() => injectSpacingCss(theme), [theme]);
+  const colorCss = useMemo(
+    () => injectColorCss(theme, mode, prefix),
+    [theme, mode, prefix]
+  );
+  const fontCss = useMemo(() => injectFontCss(theme, prefix), [theme, prefix]);
+  const spacingCss = useMemo(
+    () => injectSpacingCss(theme, prefix),
+    [theme, prefix]
+  );
 
   return (
     <div

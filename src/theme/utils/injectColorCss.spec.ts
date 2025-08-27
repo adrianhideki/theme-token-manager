@@ -99,4 +99,20 @@ describe("injectColorCss", () => {
 
     expect(vars).toMatchObject({});
   });
+
+  it("should generate variables with prefix", () => {
+    const vars = injectColorCss(mockTheme as ResultTheme, "dark", "test");
+
+    expect(vars).toMatchObject({
+      "--test-color-black-100":
+        mockTheme.base.color?.collection?.["black"][100],
+      "--test-color-black-200":
+        mockTheme.base.color?.collection?.["black"][200],
+      "--test-color-blue-100": mockTheme.base.color?.collection?.["blue"][100],
+      "--test-color-foundations-black":
+        mockTheme.base.color?.foundations?.black,
+      "--test-color-foundations-white":
+        mockTheme.base.color?.foundations?.white,
+    });
+  });
 });

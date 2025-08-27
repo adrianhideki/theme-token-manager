@@ -60,6 +60,14 @@ describe("injectSpacingCss", () => {
     });
   });
 
+  it("should inject CSS variables with prefix", () => {
+    const vars = injectSpacingCss(mockTheme, "test");
+    expect(vars).toMatchObject({
+      "--test-size-spacing-xs": mockTheme.size?.spacing?.xs,
+      "--test-size-spacing-sm": mockTheme.size?.spacing?.sm,
+    });
+  });
+
   it("should not inject when the object is empty", () => {
     const vars = injectSpacingCss({} as ResultTheme);
 

@@ -75,6 +75,19 @@ describe("injectFontCss", () => {
     });
   });
 
+  it("should inject variables with prefix", () => {
+    const vars = injectFontCss(mockTheme, "test");
+
+    expect(vars).toMatchObject({
+      "--test-font-family-body": mockTheme?.font?.family?.body,
+      "--test-font-height-body": mockTheme?.font?.height?.body,
+      "--test-font-weight-body": mockTheme?.font?.weight?.body,
+      "--test-font-size-body": mockTheme?.font?.size?.body,
+      "--test-font-paragraphSpacing-body": mockTheme?.font?.paragraphSpacing?.body,
+      "--test-font-spacing-body": mockTheme?.font?.spacing?.body,
+    });
+  });
+
   it("should not inject when the object is empty", () => {
     const vars = injectFontCss({} as ResultTheme);
 

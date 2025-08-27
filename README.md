@@ -68,6 +68,7 @@ const MyComponent = () => {
 To inject CSS variables and baseline styles, use [`CssBaseline`](src/css-baseline/index.tsx):
 
 ```tsx
+import 'theme-token-manager/css-baseline/styles.css'
 import { CssBaseline } from "theme-token-manager";
 
 <CssBaseline mode="light">
@@ -75,8 +76,8 @@ import { CssBaseline } from "theme-token-manager";
 </CssBaseline>;
 ```
 
-This will inject CSS variables based on your theme.  
-See [src/css-baseline/styles.css](src/css-baseline/styles.css) for available classes.
+This will inject CSS variables based on your theme.
+Import the [src/css-baseline/styles.css](src/css-baseline/styles.css) to work as tailwind-css classes.
 
 ---
 

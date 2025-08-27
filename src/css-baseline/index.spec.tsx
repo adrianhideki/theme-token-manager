@@ -79,4 +79,23 @@ describe("Css Baseline", () => {
 
     expect(style.backgroundColor).toBe("rgb(102, 0, 255)");
   });
+
+  it("should should inject variable with a prefix", () => {
+    const { getByTestId } = render(
+      <ThemeProvider theme={theme as Theme}>
+        <CssBaseline
+          data-testid="css-container"
+          mode="light"
+          prefix="test"
+        ></CssBaseline>
+      </ThemeProvider>
+    );
+
+    const el = getByTestId("css-container");
+    const style = getComputedStyle(el.element());
+
+    expect(style.getPropertyValue("--test-color-surface-primary-default")).toBe(
+      "#6600ff"
+    );
+  });
 });
